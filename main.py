@@ -10,7 +10,6 @@ files = find_files_and_readers(base_dir=input_dir, reader="seviri_l1b_nc")
 scn = Scene(filenames=files)
 
 # 2. Load the composites "natural_color" and "convection" [2P]
-scn.available_composite_names()
 scn.load(["natural_color"])
 scn.load(["convection"])
 
@@ -27,20 +26,19 @@ description = "Dem. Rep. Kongo und Umgebung in der Lambert Azimuthal Equal Area 
 proj_id = "Dem. Rep. Kongo"
 proj_dict = {"proj": "laea", "lat_ts": -3, "lon_0": 23}
 
-width = 500    # width of the result domain in pixels
-height = 500   # height of the result domain in pixels
+width = 500
+height = 500
 
-llx = -15E5   # projection x coordinate of lower left corner of lower left pixel
-lly = -15E5   # projection y coordinate of lower left corner of lower left pixel
-urx =  15E5   # projection x coordinate of upper right corner of upper right pixel
-ury =  15E5   # projection y coordinate of upper right corner of upper right pixel
-
+llx = -15E5
+lly = -15E5
+urx =  15E5
+ury =  15E5
 area_extent = (llx,lly,urx,ury)
+
 from pyresample.geometry import AreaDefinition
 area_def = AreaDefinition(area_id, proj_id, description, proj_dict, width, height, area_extent)
 
 local_scn = scn.resample(area_def)
-local_scn.show("natural_color")
 
 # 4. Save both loaded composites of the resampled Scene as simple png images. [2P]
 local_scn.save_datasets(writer="simple_image",
